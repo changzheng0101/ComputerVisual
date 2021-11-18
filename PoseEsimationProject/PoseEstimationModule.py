@@ -24,7 +24,7 @@ class poseDetector:
             if is_draw:
                 self.mpDraw.draw_landmarks(img, results.pose_landmarks, self.mpPose.POSE_CONNECTIONS)
 
-    def getPosition(self, img):
+    def findPosition(self, img):
         lmList = []
         imgRGB = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
         results = self.pose.process(imgRGB)
@@ -42,7 +42,7 @@ def main():
     while True:
         success, img = cap.read()
         detector.findPose(img)
-        lmList = detector.getPosition(img)
+        lmList = detector.findPosition(img)
         if len(lmList) > 0:
             cv2.circle(img, (lmList[0][1], lmList[0][2]), 10, (255, 3, 255), cv2.FILLED)
         cTime = time.time()
