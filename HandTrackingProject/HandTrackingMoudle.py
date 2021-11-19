@@ -21,7 +21,6 @@ class handDetector:
     def findHands(self, img, is_draw=True):
         imgRGB = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
         results = self.hands.process(imgRGB)
-
         if results.multi_hand_landmarks:
             # handLandmark 具体的手的坐标
             for handLandmark in results.multi_hand_landmarks:
@@ -42,6 +41,22 @@ class handDetector:
                 for id, lm in enumerate(handLandmark.landmark):
                     hand_x, hand_y = int(w * lm.x), int(h * lm.y)
                     lmList.append([id, hand_x, hand_y])
+        return lmList
+
+    def drawHandsAndGetPosition(self, img):
+        imgRGB = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
+        results = self.hands.process(imgRGB)
+        lmList = []
+
+        if results.multi_hand_landmarks:
+            # handLandmark 具体的手的坐标
+            handLandmark = results.multi_hand_landmarks[0]
+            h, w, c = img.shape
+            for id, lm in enumerate(handLandmark.landmark):
+                hand_x, hand_y = int(w * lm.x), int(h * lm.y)
+                lmList.append([id, hand_x, hand_y])
+            for handLandmark in results.multi_hand_landmarks:
+                self.mpDraw.draw_landmarks(img, handLandmark, self.mpHands.HAND_CONNECTIONS)
         return lmList
 
 
