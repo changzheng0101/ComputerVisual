@@ -17,12 +17,12 @@ cap.set(4, CamHeight)
 pTime = 0
 detector = HTM.handDetector(max_num_hands=1, min_detection_confidence=0.7)
 
+# init
 devices = AudioUtilities.GetSpeakers()
 interface = devices.Activate(
     IAudioEndpointVolume._iid_, CLSCTX_ALL, None)
 volume = cast(interface, POINTER(IAudioEndpointVolume))
-# volume.GetMute()
-# volume.GetMasterVolumeLevel()
+
 minVol, maxVol, _ = volume.GetVolumeRange()
 vol = np.interp(20, [20, 150], [minVol, maxVol])
 
